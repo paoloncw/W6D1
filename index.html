@@ -25,19 +25,36 @@
     <div class="container text-center">
       <h2 class="fs-1 fw-bold mb-3">Saldi di primavera</h2>
       <p class="fs-5 text-body-secondary mb-4">questa è la mia frase casuale a scelta</p>
-      <a href="#" class="d-inline-block bg-primary text-white text-decoration-none py-2 px-4 rounded">Vedi i prodotti</a>
+      <a href="#" class="d-inline-block bg-primary text-white text-decoration-none py-2 px-4 rounded">Vedi i
+        prodotti</a>
     </div>
   </section>
 
   <main class="container my-4">
     <div class="row">
 
-      <aside>
-        <!-- Sidebar categorie. Visibile solo da lg in su (d-none d-lg-block) -->
+      <aside class="col-lg-3 d-none d-lg-block">
+        <div class="bg-light p-3 rounded border">
+          <h3 class="fs-5 fw-bold mb-3">Categorie</h3>
+          <p class="m-0 mb-2">Scarpe</p>
+          <p class="m-0 mb-2">Borse</p>
+          <p class="m-0 mb-2">Giacche</p>
+          <p class="m-0 mb-2">Accessori</p>
+        </div>
       </aside>
 
-      <section>
-        <!-- Griglia prodotti responsive (1 / 2 / 3 / 4 per riga in base al breakpoint) -->
+      <section class="col-12 col-lg-9">
+       <h2 class="fs-3 fw-bold mb-4 text-center text-md-start">Prodotti in evidenza</h2>
+       <div class="row">
+        <article class="col-12 col-sm-6 col-xl-4 mb-3">
+            <div class="border rounded p-3 bg-white shadow-sm">
+              <div class="bg-secondary mb-2 rounded" style="height: 160px;">
+              </div>
+              <h3 class="fs-5 fw-bold m-0">Borsa Birkin</h3>
+              <p class="text-body-secondary m-0">1000,00$</p>
+            </div>
+        </article>
+       </div>
       </section>
 
     </div>
