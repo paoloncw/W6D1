@@ -4,18 +4,20 @@ const slides = [
   { titolo: "Spedizione gratis", sottotitolo: "Per ordini sopra i 50 €", colore: "dark" }
 ];
 
+// Catalogo: 6 prodotti, 2 per categoria (totale 269 €)
 const prodotti = [
-  { nome: "giacca Gucci", prezzo: "99,50$", descrizione: "Giacca elegante in tessuto pregiato." },
-  { nome: "borsa Birkin", prezzo: "65,90$", descrizione: "Borsa spaziosa e resistente." },
-  { nome: "scarpe Nike", prezzo: "535,90$", descrizione: "Scarpe sportive leggere e comode." },
-  { nome: "calze Prada", prezzo: "63,90$", descrizione: "Calze morbide per tutti i giorni." }
+  { id: 1, nome: "Sneakers Run", prezzo: 79, categoria: "scarpe", descrizione: "Scarpe sportive leggere e comode.", img: "https://placehold.co/300x180" },
+  { id: 2, nome: "Stivaletti Pelle", prezzo: 59, categoria: "scarpe", descrizione: "Stivaletti eleganti in vera pelle.", img: "https://placehold.co/300x180" },
+  { id: 3, nome: "Giacca Urban", prezzo: 49, categoria: "abbigliamento", descrizione: "Giacca leggera per la mezza stagione.", img: "https://placehold.co/300x180" },
+  { id: 4, nome: "Felpa Comfort", prezzo: 39, categoria: "abbigliamento", descrizione: "Felpa morbida in cotone.", img: "https://placehold.co/300x180" },
+  { id: 5, nome: "Zaino City", prezzo: 25, categoria: "accessori", descrizione: "Zaino spazioso e resistente.", img: "https://placehold.co/300x180" },
+  { id: 6, nome: "Cappello Sole", prezzo: 18, categoria: "accessori", descrizione: "Cappello con visiera, perfetto per l'estate.", img: "https://placehold.co/300x180" }
 ];
 
-prodotti.sort(() => Math.random() - 0.5);
-
 const slidesContainer = document.getElementById("slides-container");
-const prodottiContainer = document.getElementById("prodotti-container");
-const modalsContainer = document.getElementById("modals-container");
+const contenitoreProdotti = document.getElementById("contenitore-prodotti");
+const contatore = document.getElementById("contatore");
+const totale = document.getElementById("totale");
 
 slides.forEach((slide, i) => {
 
@@ -31,48 +33,45 @@ slides.forEach((slide, i) => {
     </div>`;
 });
 
-prodotti.forEach((p, i) => {
-  const id = `prodotto-${i + 1}`;
-
-  prodottiContainer.innerHTML += `
-    <article class="col-12 col-sm-6 col-xl-4 col-xxl-3">
-      <div class="card h-100 shadow-sm">
-        <img src="https://placehold.co/300x180" class="card-img-top" alt="${p.nome}">
+// Disegna le card dei prodotti nella lista ricevuta e aggiorna il contatore
+function renderProdotti(lista) {
+  contenitoreProdotti.innerHTML = lista.map(p => `
+    <article class="col-12 col-sm-6 col-xl-4 mb-3">
+      <div class="card h-100 ${p.categoria}">
+        <img src="${p.img}" class="card-img-top" alt="${p.nome}">
         <div class="card-body">
           <h5 class="card-title">${p.nome}</h5>
-          <p class="card-text text-body-secondary">${p.descrizione}</p>
-          <p class="fw-bold fs-5 m-0">${p.prezzo}</p>
-        </div>
-        <div class="card-footer bg-white border-0">
-          <button type="button" class="btn btn-primary w-100"
-                  data-bs-toggle="modal" data-bs-target="#${id}">Dettagli</button>
+          <p class="card-text">${p.descrizione}</p>
+          <p class="fw-bold fs-5 m-0">€ ${p.prezzo}</p>
         </div>
       </div>
-    </article>`;
+    </article>`).join("");
 
-  modalsContainer.innerHTML += `
-    <div class="modal fade" id="${id}" tabindex="-1" aria-labelledby="${id}-title" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="${id}-title">${p.nome}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
-          </div>
-          <div class="modal-body">
-            <img src="https://placehold.co/600x300" class="img-fluid mb-3" alt="${p.nome}">
-            <p>${p.descrizione}</p>
-            <p class="fw-bold fs-4 m-0">${p.prezzo}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-            <button type="button" class="btn btn-success">Aggiungi al carrello</button>
-          </div>
-        </div>
-      </div>
-    </div>`;
+  contatore.textContent = lista.length;
+}
+
+// Somma i prezzi dei prodotti della lista con reduce
+function calcolaTotale(lista) {
+  return lista.reduce((somma, p) => somma + p.prezzo, 0);
+}
+
+// Filtri: un solo listener sul contenitore (event delegation)
+document.getElementById("filtri").addEventListener("click", (e) => {
+  const bottone = e.target.closest("[data-categoria]");
+  if (!bottone) return;
+
+  // sposta la classe active sul bottone cliccato
+  document.querySelectorAll("#filtri .btn").forEach(b => b.classList.remove("active"));
+  bottone.classList.add("active");
+
+  const categoria = bottone.dataset.categoria;
+  const filtrati = categoria === "tutti" ? prodotti : prodotti.filter(p => p.categoria === categoria);
+  renderProdotti(filtrati);
 });
 
-
+// Avvio: mostra tutto il catalogo e il suo totale
+renderProdotti(prodotti);
+totale.textContent = `Totale catalogo: € ${calcolaTotale(prodotti)}`;
 
 const toggle = document.getElementById("toggle-tema");
 

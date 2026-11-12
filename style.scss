@@ -1,4 +1,52 @@
+@use 'sass:color';
 @use 'variables' as v;
+
+// Colore del brand EpiShop (verde)
+$brand-primary: hsl(150, 60%, 30%);
+
+// Sovrascrive i componenti "primary" di Bootstrap (serve !important perché Bootstrap è caricato prima)
+.btn-primary,
+.bg-primary,
+.navbar.bg-primary {
+  background-color: $brand-primary !important;
+  border-color: $brand-primary !important;
+}
+
+.text-primary {
+  color: $brand-primary !important;
+}
+
+// Hover: stesso verde, 10% più scuro
+.btn-primary:hover {
+  background-color: color.adjust($brand-primary, $lightness: -10%) !important;
+  border-color: color.adjust($brand-primary, $lightness: -10%) !important;
+}
+
+// Bottoni filtro: bordo e testo verdi, pieni quando hover o attivi
+.btn-outline-primary {
+  border-color: $brand-primary;
+  color: $brand-primary;
+
+  &:hover,
+  &.active {
+    background-color: $brand-primary;
+    border-color: $brand-primary;
+    color: #ffffff;
+  }
+}
+
+// Mixin: stile della card in base al colore della categoria
+@mixin card-prodotto($accent) {
+  border-top: 4px solid $accent;
+
+  .card-title {
+    color: $accent;
+  }
+
+  &:hover {
+    box-shadow: 0 6px 18px rgba($accent, 0.3);
+  }
+}
 
 @mixin solo-su($bp) {
   @media (min-width: $bp) {
@@ -66,4 +114,17 @@ body.dark {
   @include solo-su(768px) {
     padding: 24px;
   }
+}
+
+// Card per categoria (dopo "body.dark .card" così il bordo colorato in alto resta visibile anche nel tema scuro)
+body .card.scarpe {
+  @include card-prodotto(hsl(220, 60%, 40%));
+}
+
+body .card.abbigliamento {
+  @include card-prodotto(hsl(0, 70%, 50%));
+}
+
+body .card.accessori {
+  @include card-prodotto(hsl(45, 90%, 50%));
 }

@@ -1,6 +1,6 @@
 @use 'sass:color';
 
-$brand-primary: #0d6efd;
+$brand-primary: hsl(150, 60%, 30%);
 $brand-primary-dark: color.adjust($brand-primary, $lightness: -15%);
 $radius-base: 8px;
 $shadow-card: 0 2px 6px rgba(0, 0, 0, 0.08);
